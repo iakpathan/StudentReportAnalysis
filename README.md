@@ -8,23 +8,34 @@ This web application allows teachers to input student marks and attendance, gene
 ## Project Structure
 
 ```
-
-/charts
-├── attendance\_chart\_238w1a54b8\_1.png
-├── marks\_chart\_238w1a54b8\_1.png
-├── marks\_chart\_238w1a54b9\_1.png
-├── marks\_chart\_238w1a54c0\_1.png
-├── results\_238w1a54b8.png
-/node\_modules
-└── \[node modules for the application]
-/generate\_attendance\_chart.py   # Python script to generate the attendance chart
-/generate\_marks\_chart.py        # Python script to generate the marks chart
-/package-lock.json              # Package lock for Node.js dependencies
-/package.json                   # Project dependencies and scripts for Node.js
-/server.js                      # Backend server script using Node.js
-/student.html                   # Frontend HTML for student-related pages
-/teacher.html                   # Frontend HTML for teacher-related pages
-
+📂 StudentReportAnalysis/
+ ├── 📂 charts/                  # Contains generated attendance and marks charts
+ │    ├── attendance_chart_238w1a54b8_1.png
+ │    ├── marks_chart_238w1a54b8_1.png
+ │    ├── marks_chart_238w1a54b9_1.png
+ │    ├── marks_chart_238w1a54c0_1.png
+ │    ├── results_238w1a54b8.png
+ │
+ ├── 📂 node_modules/             # Node.js dependencies
+ │    └── (Auto-generated modules)
+ │
+ ├── 📝 generate_attendance_chart.py   # Python script for generating attendance charts
+ ├── 📝 generate_marks_chart.py        # Python script for generating marks charts
+ │
+ ├── 📄 package-lock.json         # Lock file for Node.js dependencies
+ ├── 📄 package.json              # Node.js project configuration
+ │
+ ├── 🖥️ server.js                # Backend server script using Node.js
+ │
+ ├── 📄 student.html              # Frontend HTML for student-related pages
+ ├── 📄 teacher.html              # Frontend HTML for teacher-related pages
+ │
+ ├── 📄 README.md                 # Documentation for the project
+ ├── 📄 .gitignore                 # Git ignore file
+ │
+ └── 📂 database/                 # (Optional) Database scripts or backups
+      ├── schema.sql               # SQL scripts for database structure
+      ├── data_backup.sql          # Backup data (if needed)
 ````
 
 ## Installation
@@ -58,36 +69,30 @@ This web application allows teachers to input student marks and attendance, gene
 
 ##Database tables:
 attendance:
-+------------------+--------------+------+-----+---------+----------------+
-| Field            | Type         | Null | Key | Default | Extra          |
-+------------------+--------------+------+-----+---------+----------------+
-| id               | int          | NO   | PRI | NULL    | auto_increment |
-| roll_no          | varchar(20)  | YES  |     | NULL    |                |
-| semester         | int          | YES  |     | NULL    |                |
-| class_name       | varchar(100) | YES  |     | NULL    |                |
-| attended_classes | int          | YES  |     | NULL    |                |
-| total_classes    | int          | YES  |     | NULL    |                |
-| percentage       | float        | YES  |     | NULL    |                |
-+------------------+--------------+------+-----+---------+----------------+
+CREATE TABLE attendance (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    roll_no VARCHAR(20),
+    semester INT,
+    class_name VARCHAR(100),
+    attended_classes INT,
+    total_classes INT,
+    percentage FLOAT
+);
 marks:
-+--------------+--------------+------+-----+---------+----------------+
-| Field        | Type         | Null | Key | Default | Extra          |
-+--------------+--------------+------+-----+---------+----------------+
-| id           | int          | NO   | PRI | NULL    | auto_increment |
-| roll_no      | varchar(20)  | YES  |     | NULL    |                |
-| semester     | int          | YES  |     | NULL    |                |
-| subject_name | varchar(100) | YES  |     | NULL    |                |
-| marks        | int          | YES  |     | NULL    |                |
-+--------------+--------------+------+-----+---------+----------------+
+CREATE TABLE marks (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    roll_no VARCHAR(20),
+    semester INT,
+    subject_name VARCHAR(100),
+    marks INT CHECK (marks BETWEEN 0 AND 100)
+);
 students:
-+--------------------+--------------+------+-----+---------+-------+
-| Field              | Type         | Null | Key | Default | Extra |
-+--------------------+--------------+------+-----+---------+-------+
-| roll_no            | varchar(20)  | NO   | PRI | NULL    |       |
-| name               | varchar(100) | YES  |     | NULL    |       |
-| semester           | int          | YES  |     | NULL    |       |
-| overall_attendance | decimal(5,2) | YES  |     | NULL    |       |
-+--------------------+--------------+------+-----+---------+-------+
+CREATE TABLE students (
+    roll_no VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(100),
+    semester INT,
+    overall_attendance DECIMAL(5,2)
+);
 
 
 ## Features
