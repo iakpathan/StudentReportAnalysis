@@ -9,6 +9,7 @@ This web application allows teachers to input student marks and attendance, gene
 
 ```
 ## Folders:
+```
 📂 StudentReportAnalysis/
  ├── 📂 charts/                  # Contains generated attendance and marks charts
  │    ├── attendance_chart_238w1a54b8_1.png
@@ -44,8 +45,8 @@ This web application allows teachers to input student marks and attendance, gene
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone <repository-url>
-   cd <project-directory>
+   git clone <https://github.com/iakpathan/StudentReportAnalysis>
+   cd <StudentReportAnalysis>
 ````
 
 2. Install required Node.js dependencies:
@@ -69,6 +70,7 @@ This web application allows teachers to input student marks and attendance, gene
 5. Open `student.html` or `teacher.html` in your browser to interact with the app.
 
 ## Database tables:
+```
 attendance:
 CREATE TABLE attendance (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -95,7 +97,7 @@ CREATE TABLE students (
     overall_attendance DECIMAL(5,2)
 );
 
-
+```
 ## Features
 
 * Teachers can input student marks and attendance in the frontend (HTML pages).
@@ -118,5 +120,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ```
 
-Feel free to adjust this template based on additional details you might want to add!
 ```
