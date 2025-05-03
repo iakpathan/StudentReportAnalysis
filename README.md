@@ -8,6 +8,7 @@ This web application allows teachers to input student marks and attendance, gene
 ## Project Structure
 
 ```
+## Folders:
 📂 StudentReportAnalysis/
  ├── 📂 charts/                  # Contains generated attendance and marks charts
  │    ├── attendance_chart_238w1a54b8_1.png
@@ -67,7 +68,7 @@ This web application allows teachers to input student marks and attendance, gene
 
 5. Open `student.html` or `teacher.html` in your browser to interact with the app.
 
-##Database tables:
+## Database tables:
 attendance:
 CREATE TABLE attendance (
     id INT PRIMARY KEY AUTO_INCREMENT,
