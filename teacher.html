@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    h2, h3 {
+      color: #333;
+    }
+  
+    select, input, button {
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin: 5px;
+    }
+  
+    button {
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+  
+    button:hover {
+      background-color: #218838;
+    }
+  
+    .form-section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+  
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .input-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .input-row input {
+      width: 45%;
+    }
+  
+    #chartContainer {
+      margin-top: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 700px;
+      width: 100%;
+    }
+  </style>
+  
+</head>
+<body>
+
+  <h2>Teacher Dashboard</h2>
+  
+  <label for="action">Select Action:</label>
+  <select id="action" onchange="renderForm()">
+    <option value="">-- Select --</option>
+    <option value="marks">Enter Marks</option>
+    <option value="attendance">Enter Attendance</option>
+  </select>
+
+  <div id="formContainer" class="form-section"></div>
+  <div id="chartContainer"></div>
+
+  <script>
+    function renderForm() {
+      const action = document.getElementById('action').value;
+      const formContainer = document.getElementById('formContainer');
+      document.getElementById('chartContainer').innerHTML = '';
+      formContainer.innerHTML = '';
+
+      if (action === 'marks') {
+        formContainer.innerHTML = `
+          <h3>Enter Marks</h3>
+          <div>
+            <label>Roll No:</label>
+            <input type="text" id="roll" required>
+            <label>Semester:</label>
+            <input type="number" id="semester" min="1" required>
+            <label>No. of Subjects:</label>
+            <input type="number" id="numSubjects" min="1">
+            <button type="button" onclick="generateMarksFields()">Generate Fields</button>
+          </div>
+          <form id="marksForm" class="form-group"></form>
+        `;
+      } else if (action === 'attendance') {
+        formContainer.innerHTML = `
+          <h3>Enter Attendance</h3>
+          <div>
+            <label>Roll No:</label>
+            <input type="text" id="roll" required>
+            <label>Semester:</label>
+            <input type="number" id="semester" min="1" required>
+            <label>No. of Subjects:</label>
+            <input type="number" id="numSubjects" min="1">
+            <button type="button" onclick="generateAttendanceFields()">Generate Fields</button>
+          </div>
+          <form id="attendanceForm" class="form-group"></form>
+        `;
+      }
+    }
+
+    function generateMarksFields() {
+      const count = document.getElementById('numSubjects').value;
+      const form = document.getElementById('marksForm');
+      form.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        form.innerHTML += `
+          <div class="input-row">
+            <input placeholder="Subject Name" id="sub${i}" required>
+            <input placeholder="Marks" id="marks${i}" type="number" required>
+          </div>
+        `;
+      }
+      form.innerHTML += `<button type="button" onclick="submitMarks()">Submit</button>`;
+    }
+
+    function submitMarks() {
+      const roll = document.getElementById('roll').value.trim();
+      const semester = document.getElementById('semester').value;
+      const count = document.getElementById('numSubjects').value;
+      let subjects = [];
+
+      for (let i = 0; i < count; i++) {
+        subjects.push({
+          name: document.getElementById(`sub${i}`).value,
+          marks: document.getElementById(`marks${i}`).value
+        });
+      }
+
+      fetch('http://localhost:3000/add-marks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roll_no: roll, semester, subjects })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+        document.getElementById('marksForm').reset();
+        renderForm();
+      });
+    }
+
+    function generateAttendanceFields() {
+      const count = document.getElementById('numSubjects').value;
+      const form = document.getElementById('attendanceForm');
+      form.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        form.innerHTML += `
+          <div class="input-row">
+            <input placeholder="Class Name" id="cls${i}" required>
+            <input placeholder="Attended" id="attended${i}" type="number" required>
+            <input placeholder="Total" id="total${i}" type="number" required>
+          </div>
+        `;
+      }
+      form.innerHTML += `<button type="button" onclick="submitAttendance()">Submit</button>`;
+    }
+
+    function submitAttendance() {
+      const roll = document.getElementById('roll').value.trim();
+      const semester = document.getElementById('semester').value;
+      const count = document.getElementById('numSubjects').value;
+      let subjects = [];
+      let overallAttendance = 0;
+
+      for (let i = 0; i < count; i++) {
+        const attended = parseInt(document.getElementById(`attended${i}`).value);
+        const total = parseInt(document.getElementById(`total${i}`).value);
+        const percentage = (attended / total) * 100;
+
+        subjects.push({
+          name: document.getElementById(`cls${i}`).value,
+          attended,
+          total,
+          percentage
+        });
+
+        overallAttendance += percentage;
+      }
+
+      const overallPercentage = overallAttendance / count;
+
+      fetch('http://localhost:3000/add-attendance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roll_no: roll, semester, subjects, overall_percentage: overallPercentage })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+        document.getElementById('attendanceForm').reset();
+        renderForm();
+        generateAttendanceChart(subjects);
+      });
+    }
+
+    function generateAttendanceChart(subjects) {
+      const labels = subjects.map(subject => subject.name);
+      const data = subjects.map(subject => subject.percentage);
+
+      const chartContainer = document.getElementById('chartContainer');
+      chartContainer.innerHTML = `<canvas id="attendanceChart"></canvas>`;
+
+      const ctx = document.getElementById('attendanceChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Attendance (%)',
+            data: data,
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          }
+        }
+      });
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>

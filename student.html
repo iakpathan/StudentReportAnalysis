@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1, h2 {
+      color: #333;
+      text-align: center;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+      max-width: 350px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      color: #555;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input, select {
+      padding: 8px;
+      margin-bottom: 12px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #chartContainer {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    #chartImage {
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+      width: 600px;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Student Dashboard</h1>
+
+  <div class="form-container">
+    <label for="rollNo">Roll No:</label>
+    <input type="text" id="rollNo" placeholder="Enter Roll Number">
+
+    <label for="chartType">Chart Type:</label>
+    <select id="chartType">
+      <option value="marks">Marks</option>
+      <option value="attendance">Attendance</option>
+    </select>
+
+    <label for="semester">Semester:</label>
+    <input type="text" id="semester" placeholder="Enter Semester">
+
+    <button onclick="generateChart()">Generate Chart</button>
+  </div>
+
+  <h2>Chart</h2>
+  <div id="chartContainer" style="display: none;">
+    <img id="chartImage" src="" alt="Chart will appear here">
+  </div>
+
+  <script>
+    function generateChart() {
+      const rollNo = document.getElementById('rollNo').value.trim();
+      const chartType = document.getElementById('chartType').value;
+      const semester = document.getElementById('semester').value.trim();
+
+      if (!rollNo || !semester) {
+        alert('Please enter Roll No and Semester');
+        return;
+      }
+
+      fetch(`http://localhost:3000/generate-chart?roll_no=${rollNo}&semester=${semester}&type=${chartType}`)
+        .then(res => res.json())
+        .then(data => {
+          const img = document.getElementById('chartImage');
+          img.src = data.chartUrl;
+          document.getElementById('chartContainer').style.display = 'block';
+        })
+        .catch(err => {
+          console.error('Error:', err);
+          alert('Failed to generate chart.');
+        });
+    }
+  </script>
+
+</body>
+</html>
