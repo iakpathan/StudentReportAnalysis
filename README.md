@@ -10,32 +10,32 @@ This web application allows teachers to input student marks and attendance, gene
 ```
 ## Folders:
 ```
-📂 StudentReportAnalysis/
- ├── 📂 charts/                  # Contains generated attendance and marks charts
+ StudentReportAnalysis/
+ ├──  charts/                  # Contains generated attendance and marks charts
  │    ├── attendance_chart_238w1a54b8_1.png
  │    ├── marks_chart_238w1a54b8_1.png
  │    ├── marks_chart_238w1a54b9_1.png
  │    ├── marks_chart_238w1a54c0_1.png
  │    ├── results_238w1a54b8.png
  │
- ├── 📂 node_modules/             # Node.js dependencies
+ ├──  node_modules/             # Node.js dependencies
  │    └── (Auto-generated modules)
  │
- ├── 📝 generate_attendance_chart.py   # Python script for generating attendance charts
- ├── 📝 generate_marks_chart.py        # Python script for generating marks charts
+ ├──  generate_attendance_chart.py   # Python script for generating attendance charts
+ ├──  generate_marks_chart.py        # Python script for generating marks charts
  │
- ├── 📄 package-lock.json         # Lock file for Node.js dependencies
- ├── 📄 package.json              # Node.js project configuration
+ ├──  package-lock.json         # Lock file for Node.js dependencies
+ ├──  package.json              # Node.js project configuration
  │
- ├── 🖥️ server.js                # Backend server script using Node.js
+ ├── 🖥 server.js                # Backend server script using Node.js
  │
- ├── 📄 student.html              # Frontend HTML for student-related pages
- ├── 📄 teacher.html              # Frontend HTML for teacher-related pages
+ ├──  student.html              # Frontend HTML for student-related pages
+ ├──  teacher.html              # Frontend HTML for teacher-related pages
  │
- ├── 📄 README.md                 # Documentation for the project
- ├── 📄 .gitignore                 # Git ignore file
+ ├──  README.md                 # Documentation for the project
+ ├──  .gitignore                 # Git ignore file
  │
- └── 📂 database/                 # (Optional) Database scripts or backups
+ └──  database/                 # (Optional) Database scripts or backups
       ├── schema.sql               # SQL scripts for database structure
       ├── data_backup.sql          # Backup data (if needed)
 ````
